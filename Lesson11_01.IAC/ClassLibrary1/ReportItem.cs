@@ -13,5 +13,17 @@ namespace IAC
         public string CompanyCountryCode { get; set; }
         public string CompanyCountryName { get; set; }
         public bool? BelongsToEU { get; set; }
+
+        public ReportItem(string aircraftTailNumber, string modelNumber, string modelDescription, string ownerCompanyName, string companyCountryCode, string companyCountryName, bool? belongsToEU)
+        {
+            AircraftTailNumber = aircraftTailNumber;
+            ModelNumber = modelNumber;
+            ModelDescription = modelDescription;
+            OwnerCompanyName = ownerCompanyName;
+            CompanyCountryCode = companyCountryCode;
+            CompanyCountryName = companyCountryName;
+            BelongsToEU = belongsToEU;
+        }
     }
+
 }

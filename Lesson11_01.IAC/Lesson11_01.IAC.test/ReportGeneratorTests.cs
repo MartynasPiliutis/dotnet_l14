@@ -1,7 +1,9 @@
 ﻿using System;
-using IAC.BL;
-using IAC.BL.Repositories;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System.Collections.Generic;
+using IAC;
+using IAC.BL.Repositories;
+
 
 namespace Lesson11_01.IAC.test
 {
@@ -12,11 +14,7 @@ namespace Lesson11_01.IAC.test
         public void GenerateReportAircraftInEuropeShouldReturnListWithReportItems()
         {
             // Assign
-            ReportGenerator reportGenerator = new ReportGenerator(
-                new AircraftRepository(),
-                new AircraftModelRepository(),
-                new CompanyRepository(),
-                new CountryRepository());
+            ReportGenerator reportGenerator = new ReportGenerator(new AircraftRepository(), new CompanyRepository(), new CountryRepository(), new AircraftModelRepository());
 
             // Act
             var report = reportGenerator.GenerateReportAircraftInEurope();
@@ -26,3 +24,4 @@ namespace Lesson11_01.IAC.test
         }
     }
 }
+

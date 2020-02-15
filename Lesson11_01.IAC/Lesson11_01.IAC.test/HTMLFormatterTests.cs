@@ -7,7 +7,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Lesson11_01.IAC.test
 {
-    [TestClass]
+/*    [TestClass]
     public class HTMLFormatterTests
     {
         [TestMethod]
@@ -55,5 +55,5 @@ namespace Lesson11_01.IAC.test
                 }
             };
         }
-    }
+    }*/
 }

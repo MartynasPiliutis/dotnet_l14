@@ -1,52 +1,42 @@
-﻿using IAC.BL.Repositories;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using IAC.BL.Repositories;
+using System.Threading.Tasks;
 
-namespace IAC.BL
+
+namespace IAC
 {
-    public class ReportGenerator
-    {
-        private AircraftRepository _aircraftRepository;
-        private AircraftModelRepository _aircraftModelRepository;
-        private CompanyRepository _companyRepository;
-        private CountryRepository _countryRepository;
-        public ReportGenerator(AircraftRepository aircraftRepository,
-            AircraftModelRepository aircraftModelRepository,
-            CompanyRepository companyRepository,
-            CountryRepository countryRepository)
-        {
-            _aircraftRepository = aircraftRepository;
-            _aircraftModelRepository = aircraftModelRepository;
-            _companyRepository = companyRepository;
-            _countryRepository = countryRepository;
-        }
+	public class ReportGenerator
+	{
+		private AircraftRepository aircraftRepository;
+		private CompanyRepository companyRepository;
+		private CountryRepository countryRepository;
+		private AircraftModelRepository aircraftModelRepository;
 
-        public List<ReportItem> GenerateReportAircraftInEurope()
-        {
-            List<Aircraft> lektuvai = _aircraftRepository.Retrieve();
-            List<ReportItem> ataskaita = new List<ReportItem>();
-            
-            foreach (var vienasLektuvas in lektuvai)
-            {
-                Company lektuvoKompanija = _companyRepository.Retrieve(vienasLektuvas.CompanyId);
-                Country lektuvoSalis = _countryRepository.Retrieve(lektuvoKompanija.CountryId);
-                AircraftModel lektuvoModelis = _aircraftModelRepository.Retrieve(vienasLektuvas.ModelId);
-                if (lektuvoSalis.Continent == "Europe")
-                {
-                    ReportItem eilute = new ReportItem();
-                    eilute.AircraftTailNumber = vienasLektuvas.TailNumber;
-                    eilute.ModelNumber = lektuvoModelis.Number;
-                    eilute.ModelDescription = lektuvoModelis.Description;
-                    eilute.OwnerCompanyName = lektuvoKompanija.Name;
-                    eilute.CompanyCountryCode = lektuvoSalis.Code;
-                    eilute.CompanyCountryName = lektuvoSalis.Name;
-                    eilute.BelongsToEU = lektuvoSalis.BelongsToEU;
-                    ataskaita.Add(eilute);
-                }
-            }
-            return ataskaita;
-        }
+		public ReportGenerator(AircraftRepository aircraftRepository, CompanyRepository companyRepository, CountryRepository countryRepository, AircraftModelRepository aircraftModelRepository)
+		{
+			this.aircraftRepository = aircraftRepository;
+			this.companyRepository = companyRepository;
+			this.countryRepository = countryRepository;
+			this.aircraftModelRepository = aircraftModelRepository;
+		}
 
-    }
+		List<ReportItem> reportItem = new List<ReportItem>();
+		public List<ReportItem> GenerateReportAircraftInEurope()
+		{
+			List<Aircraft> aircrafts = aircraftRepository.Retrieve();
+			foreach (var item in aircrafts)
+			{
+				Company company = companyRepository.Retrieve(item.CompanyId);
+				Country country = countryRepository.Retrieve(company.CountryId);
+				string continent = country.Continent;
+				if (continent == "Europe")
+				{
+					reportItem.Add(new ReportItem(item.TailNumber, aircraftModelRepository.Retrieve(item.ModelId).Number, aircraftModelRepository.Retrieve(item.ModelId).Description, company.Name, country.Code, country.Name, country.BelongsToEU));
+				}
+			}
+			return reportItem;
+		}
+	}
 }
